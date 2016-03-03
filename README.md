@@ -12,10 +12,14 @@ The (known) limitations so far:
 
   * The time ticking is happening all the time in the background, so if you're unlucky you'll miss out of a big part of a second when you start typing. Some signal to the top to start the ticking should be implemented.
 
+  * Backspace is not working. It seems some hijacking in JavaScript is needed to get it to work. So, if you mistype a word you'll have to skip it by pressing space.
+
   * Damn ugly GUI (not intended to improve though)
 
- The idea is to finish most of the issues stated above as a good learning practice. Any suggestions would be appreciated!
+## The future
 
- When the above is finished, these things should be fixed:
+The idea is to finish most of the issues stated above as a good learning practice. Any suggestions would be appreciated!
+
+When the above is finished, these things should be fixed:
 
   * Show a summary when the game has ended (WPM and so on)
