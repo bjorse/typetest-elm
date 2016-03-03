@@ -14,6 +14,7 @@ The (known) limitations so far:
 
  * Damn ugly GUI (not intended to improve though)
 
+
  The idea is to finish most of the issues stated above as a good learning practice. Any suggestions would be appreciated!
 
  When the above is finished, these things should be fixed:
