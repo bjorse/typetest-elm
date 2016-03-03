@@ -39,10 +39,6 @@ appendTypedText : WordStatus -> Char -> WordStatus
 appendTypedText word typedChar =
   { word | typedText = word.typedText ++ (String.fromChar typedChar) }
 
-clearTypedText : WordStatus -> WordStatus
-clearTypedText word =
-  { word | typedText = "" }
-
 getNextWord : List String -> WordStatus
 getNextWord words =
   case List.head words of
