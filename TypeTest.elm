@@ -5,7 +5,6 @@ import Html exposing (..)
 import Html.Attributes exposing (style)
 import String
 import Char
-import Keyboard
 
 type alias WordStatus =
   { text : String
@@ -155,7 +154,7 @@ view address model =
   , text ("Time: " ++ (String.padLeft 3 '0' (toString model.timeElapsed)))
   , div [ if model.hasTypingError then errorStyle else noErrorStyle ] 
     [ text model.currentWord.typedText
-    , text (if model.hasTypingError then (" [ TYPING ERROR ]") else "")
+    , text (if model.hasTypingError then (" [ TYPING ERROR (press space to skip word) ]") else "")
     ]
   , hr [] []
   , div [ currentWordStyle ] [ text model.currentWord.text ]
