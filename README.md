@@ -1,12 +1,12 @@
-# Type test
+# Typing test
 
-This is my first Elm project on GitHub. It's a simple type test project. It's not finished yet though, so expect bugs if you actually try it out.
+This is my first Elm project on GitHub. It's a simple typing test project. It's not finished yet though, so expect bugs if you actually try it out.
 
 The (known) limitations so far:
 
-  * 1000 word count limit
+  * 1000 word limit (and filtered on words above 2 characters, so even less than that)
 
-  * No error handling when words run out (words just stop to appear)
+  * No good handling when words run out (words just stop to appear)
 
   * ~~No actual ending on the contest, time keeps ticking~~ (fixed)
 
@@ -22,4 +22,4 @@ The idea is to finish most of the issues stated above as a good learning practic
 
 When the above is finished, these things should be fixed:
 
-  * ~~Show a summary when the game has ended (WPM and so on)~~ (fixed, updated continously during the game)
+  * ~~Show a summary when the game has ended (WPM and so on)~~ (fixed, updated continously throughout the game)

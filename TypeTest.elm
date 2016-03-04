@@ -216,12 +216,18 @@ view address model =
       [ text (String.padLeft 3 '0' (toString model.timeLeft)) ]
     ]
   , hr [] []
-  , div [ fixedHeightStyle, (if model.hasTypingError then errorStyle else noErrorStyle) ] 
-    [ text model.currentWord.typedText
-    , text (if model.hasTypingError then (" [ TYPING ERROR (press space to skip word) ]") else "")
+  , div [ lineHeightStyle ]
+    [ div [ pullLeftStyle ]
+      [ div [ if model.hasTypingError then errorStyle else noErrorStyle ] 
+        [ text model.currentWord.typedText ]
+      ]
+    , div [ pullRightStyle ]
+      [ div [ errorStyle ]
+        [ text (if model.hasTypingError then ("press space to skip word") else "") ]
+      ]
     ]
-  , hr [] []
-  , div [ fixedHeightStyle, currentWordStyle ] 
+  , hr [ clearStyle ] []
+  , div [ currentWordStyle ] 
     [ text model.currentWord.text ]
   , hr [] []
   , span [ awaitingWordsStyle ]
@@ -240,23 +246,35 @@ view address model =
     ]
   ]
 
-lineHeight = "20px"
+lineHeight = ("height", "24px")
 
 bold = ("font-weight", "bold")
+
+bigFontSize = ("font-size", "24px")
+
+fixedHeight = ("display", "block")
+
+pullLeftStyle = 
+  style
+    [ ("float", "left") ]
+
+pullRightStyle =
+  style
+    [ ("float", "right") ]
+
+clearStyle =
+  style
+    [ ("float", "clear") ]
 
 baseStyle =
   style 
     [ ("display", "inline-block")
-    , ("margin", "10px")
+    , ("margin", "20px")
     ]
 
 boldStyle =
   style
     [ bold ]
-
-fixedHeightStyle =
-  style
-    [ ("display", "block") ]
 
 timeStyle =
   style
@@ -264,29 +282,38 @@ timeStyle =
     , bold
     ]
 
+lineHeightStyle =
+  style
+    [ lineHeight ]
+
 currentWordStyle = 
   style 
     [ ("color", "blue")
     , bold
-    , ("height", lineHeight)
+    , bigFontSize
+    , fixedHeight
+    , lineHeight
     ]
 
 noErrorStyle =
   style 
     [ ("color", "green") 
     , bold
-    , ("height", lineHeight)
-    , ("line-height", lineHeight)
+    , bigFontSize
+    , fixedHeight
+    , lineHeight
     ]
 
 errorStyle = 
   style 
     [ ("color", "red") 
     , bold
-    , ("height", lineHeight)
-    , ("line-height", lineHeight)
+    , bigFontSize
+    , lineHeight
     ]
 
 awaitingWordsStyle =
   style
-    [ ("opacity", "0.5") ]
+    [ ("opacity", "0.5")
+    , ("lineHeight", "18px")
+    , ("font-size", "18px") ]
