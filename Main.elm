@@ -33,7 +33,7 @@ keyboardToAction keyCode =
 
 app =
   StartApp.start
-    { init = (TypeTest.init [], fetchWords)
+    { init = (TypeTest.init 120, fetchWords)
     , update = TypeTest.update
     , view = TypeTest.view
     , inputs = [ Signal.map keyboardToAction Keyboard.presses

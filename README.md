@@ -8,7 +8,7 @@ The (known) limitations so far:
 
   * No error handling when words run out (words just stop to appear)
 
-  * No actual ending on the contest, time keeps ticking
+  * ~~No actual ending on the contest, time keeps ticking~~ (fixed)
 
   * The time ticking is happening all the time in the background, so if you're unlucky you'll miss out of a big part of a second when you start typing. Some signal to the top to start the ticking should be implemented.
 
@@ -22,4 +22,4 @@ The idea is to finish most of the issues stated above as a good learning practic
 
 When the above is finished, these things should be fixed:
 
-  * Show a summary when the game has ended (WPM and so on)
+  * ~~Show a summary when the game has ended (WPM and so on)~~ (fixed, updated continously during the game)
