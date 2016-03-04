@@ -227,11 +227,11 @@ view address model =
       ]
     ]
   , hr [ clearStyle ] []
-  , div [ currentWordStyle ] 
-    [ text model.currentWord.text ]
-  , hr [] []
-  , span [ awaitingWordsStyle ]
-    [ text (String.join ", " (List.take 5 model.words))
+  , div []
+    [ span [ currentWordStyle ] 
+      [ text model.currentWord.text ]
+    , span [ awaitingWordsStyle ]
+      [ text (String.join " " (List.take 5 model.words)) ]
     ]
   , hr [] []
   , div []
@@ -291,7 +291,6 @@ currentWordStyle =
     [ ("color", "blue")
     , bold
     , bigFontSize
-    , fixedHeight
     , lineHeight
     ]
 
@@ -307,6 +306,7 @@ noErrorStyle =
 errorStyle = 
   style 
     [ ("color", "red") 
+    , ("display", "inline-block")
     , bold
     , bigFontSize
     , lineHeight
@@ -315,5 +315,9 @@ errorStyle =
 awaitingWordsStyle =
   style
     [ ("opacity", "0.5")
-    , ("lineHeight", "18px")
-    , ("font-size", "18px") ]
+    , ("display", "inline-block")
+    , ("word-spacing", "10px")
+    , ("margin-left", "15px")
+    , bigFontSize
+    , lineHeight
+    ]
