@@ -289,6 +289,7 @@ lineHeightStyle =
 currentWordStyle = 
   style 
     [ ("color", "blue")
+    , ("display", "inline-block")
     , bold
     , bigFontSize
     , lineHeight
@@ -306,9 +307,9 @@ noErrorStyle =
 errorStyle = 
   style 
     [ ("color", "red") 
-    , ("display", "inline-block")
     , bold
     , bigFontSize
+    , fixedHeight
     , lineHeight
     ]
 
