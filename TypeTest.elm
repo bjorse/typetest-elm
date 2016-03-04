@@ -98,12 +98,12 @@ getTypeTestResult : Model -> TypeTestResult
 getTypeTestResult model =
   let
     timeSpent = model.totalTime - model.timeLeft
-    totalCharactersTyped = model.count + model.errorCount
+    correctCharactersTyped = model.count - model.errorCount
   in
-    { wpmTotal = Calculations.calculateWpm timeSpent totalCharactersTyped
-    , wpmCorrect = Calculations.calculateWpm timeSpent model.count
-    , cpmTotal = Calculations.calculateCpm timeSpent totalCharactersTyped
-    , cpmCorrect = Calculations.calculateCpm timeSpent model.count
+    { wpmTotal = Calculations.calculateWpm timeSpent model.count
+    , wpmCorrect = Calculations.calculateWpm timeSpent correctCharactersTyped
+    , cpmTotal = Calculations.calculateCpm timeSpent model.count
+    , cpmCorrect = Calculations.calculateCpm timeSpent correctCharactersTyped
     }
 
 update : Action -> Model -> (Model, Effects Action)
