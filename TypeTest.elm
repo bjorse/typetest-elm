@@ -115,7 +115,7 @@ update action model =
     Tick ->
       let
         newTimeLeft = getNextTimeLeft model
-        newResult = if model.timeLeft > 0 then getTypeTestResult model else model.result 
+        newResult = if model.timeLeft > 0 then getTypeTestResult model else model.result
       in
         ({ model | timeLeft = newTimeLeft
                  , result = newResult }, Effects.none)
@@ -130,23 +130,26 @@ update action model =
                  , currentWord = currentWord }, Effects.none)
 
     FinishOrSkipCurrentWord ->
-      let
-        wordSkipped = not (wordFinished model.currentWord)
-        newWord = getNextWord model.words
-        newWords = removeFirstWord model.words
-        pastWords = model.currentWord :: model.pastWords
-        completedWordCount = if wordSkipped then model.completedWordCount else model.completedWordCount + 1
-        skippedWordCount = if wordSkipped then model.skippedWordCount + 1 else model.skippedWordCount
-      in
-        ({ model | words = newWords
-                 , currentWord = newWord
-                 , hasTypingError = False
-                 , count = model.count + 1
-                 , errorCount = if wordSkipped then model.errorCount + 1 else model.errorCount
-                 , skippedWordCount = skippedWordCount
-                 , completedWordCount = completedWordCount
-                 , streak = if wordSkipped then 0 else model.streak + 1
-                 , pastWords = pastWords }, Effects.none)
+      if model.timeLeft == 0
+        then ( model, Effects.none )
+        else
+          let
+            wordSkipped = not (wordFinished model.currentWord)
+            newWord = getNextWord model.words
+            newWords = removeFirstWord model.words
+            pastWords = model.currentWord :: model.pastWords
+            completedWordCount = if wordSkipped then model.completedWordCount else model.completedWordCount + 1
+            skippedWordCount = if wordSkipped then model.skippedWordCount + 1 else model.skippedWordCount
+          in
+            ({ model | words = newWords
+                     , currentWord = newWord
+                     , hasTypingError = False
+                     , count = model.count + 1
+                     , errorCount = if wordSkipped then model.errorCount + 1 else model.errorCount
+                     , skippedWordCount = skippedWordCount
+                     , completedWordCount = completedWordCount
+                     , streak = if wordSkipped then 0 else model.streak + 1
+                     , pastWords = pastWords }, Effects.none)
 
     UpdateTypedText char ->
       if model.timeLeft == 0
