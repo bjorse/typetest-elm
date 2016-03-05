@@ -230,7 +230,7 @@ view address model =
   , boldSpan model.skippedWordCount
   , hr [] []
   , span []
-    [ text "Time: "
+    [ text "Time left: "
     , span [ timeStyle ]
       [ text (String.padLeft 3 '0' (toString model.timeLeft)) ]
     ]
