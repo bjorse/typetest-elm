@@ -41,12 +41,21 @@ type Action
   = NoOp
   | Tick
   | UpdateWords (Maybe String)
-  | SkipCurrentWord
+  | FinishOrSkipCurrentWord
   | UpdateTypedText Char
+  | RemoveLastCharInTypedText
 
 appendTypedText : WordStatus -> Char -> WordStatus
 appendTypedText word typedChar =
-  { word | typedText = word.typedText ++ (String.fromChar typedChar) }
+  { word | typedText = if String.length word.typedText < 45 
+                         then word.typedText ++ (String.fromChar typedChar) 
+                         else word.typedText }
+
+removeLastCharInTypedText : WordStatus -> WordStatus
+removeLastCharInTypedText word =
+  { word | typedText = if String.length word.typedText > 0 
+                         then String.slice 0 -1 word.typedText 
+                         else word.typedText }
 
 getNextWord : List String -> WordStatus
 getNextWord words =
@@ -73,25 +82,17 @@ getNextTypeStatus char model =
   let
     currentWord = appendTypedText model.currentWord (Char.toLower char)
     hasTypingError = not (typedTextMatches currentWord)
-    newWordNeeded = wordFinished currentWord
-    newWord = if newWordNeeded then getNextWord model.words else currentWord
-    words = if newWordNeeded then removeFirstWord model.words else model.words
-    pastWords = if newWordNeeded then currentWord :: model.pastWords else model.pastWords
     errorCount = if hasTypingError then model.errorCount + 1 else model.errorCount
     streak = if hasTypingError then 0 else model.streak + 1
     highestStreak = if streak > model.highestStreak then streak else model.highestStreak
-    completedWordCount = if newWordNeeded then model.completedWordCount + 1 else model.completedWordCount
   in
-    { model | currentWord = newWord
+    { model | currentWord = currentWord
             , running = True
             , count = model.count + 1
             , errorCount = errorCount
             , hasTypingError = hasTypingError
-            , words = words
-            , pastWords = pastWords
             , streak = streak
             , highestStreak = highestStreak
-            , completedWordCount = completedWordCount 
     }
 
 getTypeTestResult : Model -> TypeTestResult
@@ -128,23 +129,38 @@ update action model =
         ({ model | words = words
                  , currentWord = currentWord }, Effects.none)
 
-    SkipCurrentWord ->
+    FinishOrSkipCurrentWord ->
       let
+        wordSkipped = not (wordFinished model.currentWord)
         newWord = getNextWord model.words
         newWords = removeFirstWord model.words
+        pastWords = model.currentWord :: model.pastWords
+        completedWordCount = if wordSkipped then model.completedWordCount else model.completedWordCount + 1
+        skippedWordCount = if wordSkipped then model.skippedWordCount + 1 else model.skippedWordCount
       in
         ({ model | words = newWords
                  , currentWord = newWord
                  , hasTypingError = False
                  , count = model.count + 1
-                 , errorCount = model.errorCount + 1
-                 , skippedWordCount = model.skippedWordCount + 1
-                 , streak = 0 }, Effects.none)
+                 , errorCount = if wordSkipped then model.errorCount + 1 else model.errorCount
+                 , skippedWordCount = skippedWordCount
+                 , completedWordCount = completedWordCount
+                 , streak = if wordSkipped then 0 else model.streak + 1
+                 , pastWords = pastWords }, Effects.none)
 
     UpdateTypedText char ->
       if model.timeLeft == 0
         then ( model, Effects.none )
         else ( getNextTypeStatus char model, Effects.none)
+
+    RemoveLastCharInTypedText ->
+      let
+        currentWord = removeLastCharInTypedText model.currentWord
+        hasTypingError = not (typedTextMatches currentWord)
+      in
+        ({ model | currentWord = currentWord
+                 , hasTypingError = hasTypingError
+                 , streak = 0 }, Effects.none)
 
 parseWords : Maybe String -> List String
 parseWords wordText =

@@ -1,6 +1,7 @@
 module Main where
 
 import Http
+import Html.Events exposing (..)
 import Json.Decode as Json exposing (..)
 import Task exposing (..)
 import Effects exposing (..)
@@ -27,7 +28,7 @@ keyboardToAction keyCode =
     -- Enter key
     13 -> TypeTest.NoOp                
     -- Space key
-    32 -> TypeTest.SkipCurrentWord
+    32 -> TypeTest.FinishOrSkipCurrentWord
     -- The rest
     code -> TypeTest.UpdateTypedText (Char.fromCode code)
 
@@ -37,7 +38,8 @@ app =
     , update = TypeTest.update
     , view = TypeTest.view
     , inputs = [ Signal.map keyboardToAction Keyboard.presses
-               , Signal.map (\_ -> TypeTest.Tick) (Time.fps 1) ]
+               , Signal.map (\_ -> TypeTest.Tick) (Time.fps 1)
+               , Signal.map (\_ -> TypeTest.RemoveLastCharInTypedText) backspace ]
     }
 
 main = 
@@ -46,3 +48,5 @@ main =
 port tasks : Signal (Task.Task Never ())
 port tasks =
   app.tasks
+
+port backspace : Signal ()
