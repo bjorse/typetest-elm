@@ -10,7 +10,7 @@ import Calculations
 type alias WordStatus =
   { text : String
   , typedText : String
-}
+  }
 
 type alias TypeTestResult =
   { wpmTotal : Int
@@ -92,8 +92,7 @@ getNextTypeStatus char model =
             , errorCount = errorCount
             , hasTypingError = hasTypingError
             , streak = streak
-            , highestStreak = highestStreak
-    }
+            , highestStreak = highestStreak }
 
 getTypeTestResult : Model -> TypeTestResult
 getTypeTestResult model =
@@ -153,17 +152,20 @@ update action model =
 
     UpdateTypedText char ->
       if model.timeLeft == 0
-        then ( model, Effects.none )
-        else ( getNextTypeStatus char model, Effects.none)
+        then (model, Effects.none)
+        else (getNextTypeStatus char model, Effects.none)
 
     RemoveLastCharInTypedText ->
-      let
-        currentWord = removeLastCharInTypedText model.currentWord
-        hasTypingError = not (typedTextMatches currentWord)
-      in
-        ({ model | currentWord = currentWord
-                 , hasTypingError = hasTypingError
-                 , streak = 0 }, Effects.none)
+      if model.timeLeft == 0
+        then (model, Effects.none)
+        else
+          let
+            currentWord = removeLastCharInTypedText model.currentWord
+            hasTypingError = not (typedTextMatches currentWord)
+          in
+            ({ model | currentWord = currentWord
+                     , hasTypingError = hasTypingError
+                     , streak = 0 }, Effects.none)
 
 parseWords : Maybe String -> List String
 parseWords wordText =
@@ -174,7 +176,7 @@ parseWords wordText =
       String.slice 3 -5 wordText 
       |> String.toLower
       |> String.words
-      |> List.filter (\word -> (String.length word) > 2)
+      |> List.filter (\word -> String.length word > 2)
 
 typedTextMatches : WordStatus -> Bool
 typedTextMatches word =
